@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Report</title>
+    <script type="text/Javascript">
+    function BMI(){
+        let height = parseInt(document.querySelector("#height").value);
+        let weight = parseInt(document.querySelector("#weight").value);
+        let result = document.querySelector("#result");
+
+        if (height == "")
+            result.innerHTML = "Provide a height!";
+        else if (weight == "")
+            result.innerHTML = "Provide a valid Weight!";
+        else {
+            let bmi = (weight / ((height * height)/10000)).toFixed(2);
+        
+
+        if (bmi < 18.6) 
+            result.innerHTML = `Under Weight: <span>${bmi}</span>`;
+        else if (bmi >= 18.6 && bmi < 24.9)
+            result.innerHTML = `Normal : <span>${bmi}<span>`;
+        else result.innerHTML = `Over Weight : <span>${bmi}</span>`;
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST","/store-bmi-result",true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(JSON.stringify({ height, weight,bmi}));
+        }
+    }
+    </script>
+</head>
+<body>
+    <h1>BMI Calculator</h1>
+    <p>Height (in cm)</p>
+    <input type="text" id="height"/>
+    <p>Weight (in kg)</p>
+    <input type="text" id="weight"/>
+    <button id="CalBtn" onclick="BMI()">CALCULATE</button>
+    <div id="result"></div>
+</body>
+</html>
